@@ -22,6 +22,10 @@ inputs:
     description: 'Token to use to push into the build cache'
     required: false
     default: 'unspecified'
+  push-only-dependencies:
+    description: 'Only push dependencies to build cache'
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -75,15 +79,27 @@ runs:
     run: |
       spack -e myenv install
 
-  - name: Push packages to buildcache and update index
+  - name: Add token to buildcache
     if: ${{ inputs.build-cache-token != 'unspecified' }}
     shell: bash
     run: |
       spack -e myenv mirror set --push \
             --oci-username ${{ github.actor }} \
             --oci-password "${{ inputs.build-cache-token }}" mochi-buildcache
+
+  - name: Push dependency packages to buildcache and update index
+    if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true') }}
+    shell: bash
+    run: |
       spack -e myenv buildcache push --base-image ubuntu:22.04 \
             --unsigned --only dependencies --update-index mochi-buildcache
+
+  - name: Push dependency packages to buildcache and update index
+    if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false') }}
+    shell: bash
+    run: |
+      spack -e myenv buildcache push --base-image ubuntu:22.04 \
+            --unsigned --update-index mochi-buildcache
 
   - name: Cleanup mochi-spack-packages
     shell: bash
