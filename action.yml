@@ -91,7 +91,7 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true') }}
     shell: bash
     run: |
-      export BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }}
+      BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }} \
       spack -e myenv buildcache push --base-image ubuntu:22.04 \
             --unsigned --only dependencies --update-index mochi-buildcache
 
@@ -99,7 +99,7 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false') }}
     shell: bash
     run: |
-      export BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }}
+      BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }} \
       spack -e myenv buildcache push --base-image ubuntu:22.04 \
             --unsigned --update-index mochi-buildcache
 
