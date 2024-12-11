@@ -85,12 +85,13 @@ runs:
     run: |
       spack -e myenv mirror set --push \
             --oci-username ${{ github.actor }} \
-            --oci-password "${{ inputs.build-cache-token }}" mochi-buildcache
+            --oci-password-variable BUILD_CACHE_TOKEN mochi-buildcache
 
   - name: Push dependency packages to buildcache and update index
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true') }}
     shell: bash
     run: |
+      export BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }}
       spack -e myenv buildcache push --base-image ubuntu:22.04 \
             --unsigned --only dependencies --update-index mochi-buildcache
 
@@ -98,6 +99,7 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false') }}
     shell: bash
     run: |
+      export BUILD_CACHE_TOKEN=${{ inputs.build-cache-token }}
       spack -e myenv buildcache push --base-image ubuntu:22.04 \
             --unsigned --update-index mochi-buildcache
 

@@ -1,10 +1,9 @@
-# This file defines the spack environment used by github actions
-# (tests, codeql, and codecov) when building and testing the code.
-# In particular the "config" field sets the installation path and
-# spack caches to ~/.spack-ci so that they can be retrieved using
-# the github cache action across runs.
 spack:
   specs: []
+  view: /opt/view
+  packages:
+    all:
+      require: 'target=x86_64_v3'
   concretizer:
     unify: true
     reuse: true
