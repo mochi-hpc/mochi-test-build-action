@@ -83,11 +83,11 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true')}}
     shell: bash
     run: |
-      spack -e myenv find --no-groups -X > specs.txt
-      awk 'NR > 1 && NF {found=1} found' specs.txt | grep -qE "@develop|@master|@main"
-      if [ $? -eq 0 ]; then
+      spack -e myenv find --no-groups -X \
+        | awk 'BEGIN { skip=1 } /^$/ { skip=0; next } skip==0 { print }' > specs.txt
+      if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
-        echo "------ specs are the following:" >&2
+        echo "------ Specs are the following:" >&2
         cat specs.txt >&2
         exit 1
       else
@@ -98,11 +98,11 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false')}}
     shell: bash
     run: |
-      spack -e myenv find --no-groups > specs.txt
-      awk 'NR > 1 && NF {found=1} found' specs.txt | grep -qE "@develop|@master|@main"
-      if [ $? -eq 0 ]; then
+      spack -e myenv find --no-groups \
+        | awk 'BEGIN { skip=1 } /^$/ { skip=0; next } skip==0 { print }' > specs.txt
+      if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
-        echo "------ specs are the following:" >&2
+        echo "------ Specs are the following:" >&2
         cat specs.txt >&2
         exit 1
       else
