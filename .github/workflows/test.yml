@@ -11,12 +11,18 @@ jobs:
     runs-on: ubuntu-22.04
     name: Build the latest version of margo
     steps:
-      - uses: actions/checkout@v4
-      - uses: mochi-hpc/mochi-test-build-action@main
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Use mochi-test-build-action@main to build mochi-margo"
+        uses: mochi-hpc/mochi-test-build-action@main
         with:
           package-name: mochi-margo
           build-cache-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: mochi-hpc/mochi-test-build-action@main
+          push-only-dependencies: false
+
+      - name: "Use mochi-test-build-action@main to build mochi-margo@main"
+        uses: mochi-hpc/mochi-test-build-action@main
         with:
           package-name: mochi-margo
           package-version: '@main'

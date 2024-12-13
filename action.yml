@@ -79,6 +79,30 @@ runs:
     run: |
       spack -e myenv install
 
+  - name: Find and check Spack dependencies
+    if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true')}}
+    shell: bash
+    run: |
+      spack find --no-groups -X > specs.txt
+      if grep -qE "@develop|@master|@main" specs.txt; then
+        echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
+        exit 1
+      else
+        echo "No develop dependencies found. Workflow can proceed."
+      fi
+
+  - name: Find and check Spack dependencies
+    if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false')}}
+    shell: bash
+    run: |
+      spack find --no-groups > specs.txt
+      if grep -qE "@develop|@master|@main" specs.txt; then
+        echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
+        exit 1
+      else
+        echo "No develop dependencies found. Workflow can proceed."
+      fi
+
   - name: Add token to buildcache
     if: ${{ inputs.build-cache-token != 'unspecified' }}
     shell: bash
