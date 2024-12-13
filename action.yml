@@ -84,7 +84,8 @@ runs:
     shell: bash
     run: |
       spack -e myenv find --no-groups -X > specs.txt
-      if grep -qE "@develop|@master|@main" specs.txt; then
+      awk 'NR > 1 && NF {found=1} found' specs.txt | grep -qE "@develop|@master|@main"
+      if [ $? -eq 0 ]; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
         echo "------ specs are the following:" >&2
         cat specs.txt >&2
@@ -98,7 +99,8 @@ runs:
     shell: bash
     run: |
       spack -e myenv find --no-groups > specs.txt
-      if grep -qE "@develop|@master|@main" specs.txt; then
+      awk 'NR > 1 && NF {found=1} found' specs.txt | grep -qE "@develop|@master|@main"
+      if [ $? -eq 0 ]; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
         echo "------ specs are the following:" >&2
         cat specs.txt >&2
