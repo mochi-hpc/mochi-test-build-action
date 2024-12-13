@@ -83,7 +83,7 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'true')}}
     shell: bash
     run: |
-      spack find --no-groups -X > specs.txt
+      spack -e myenv find --no-groups -X > specs.txt
       if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
         exit 1
@@ -95,7 +95,7 @@ runs:
     if: ${{ (inputs.build-cache-token != 'unspecified') && (inputs.push-only-dependencies == 'false')}}
     shell: bash
     run: |
-      spack find --no-groups > specs.txt
+      spack -e myenv find --no-groups > specs.txt
       if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
         exit 1
