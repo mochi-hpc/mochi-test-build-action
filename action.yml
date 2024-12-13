@@ -86,6 +86,8 @@ runs:
       spack -e myenv find --no-groups -X > specs.txt
       if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
+        echo "------ specs are the following:" >&2
+        cat specs.txt >&2
         exit 1
       else
         echo "No develop dependencies found. Workflow can proceed."
@@ -98,6 +100,8 @@ runs:
       spack -e myenv find --no-groups > specs.txt
       if grep -qE "@develop|@master|@main" specs.txt; then
         echo "Error: Found develop dependencies (@develop, @master, or @main) in specs.txt." >&2
+        echo "------ specs are the following:" >&2
+        cat specs.txt >&2
         exit 1
       else
         echo "No develop dependencies found. Workflow can proceed."
