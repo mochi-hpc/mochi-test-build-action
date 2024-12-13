@@ -56,6 +56,9 @@ jobs:
         # this will make the workflow push any dependencies built to the mochi-spack-buildcache
         # after a successful installation of the package
         build-cache-token: ${{ secrets.GITHUB_TOKEN }}
+        # By default, only the dependencies of the root package will be pushed into the cache.
+        # To also push the root package, set push-only-dependencies to false.
+        push-only-dependencies: true
         # Version of spack to use (default is the develop branch)
         spack-version: v0.22.1
         # Reference (main or a commit hash) to use for mochi-spack-packages (default is main)
