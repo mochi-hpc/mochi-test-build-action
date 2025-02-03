@@ -77,6 +77,7 @@ runs:
   - name: Install environment
     shell: bash
     run: |
+      spack -e myenv concretize --fresh
       spack -e myenv install
 
   - name: Find and check Spack dependencies
