@@ -21,7 +21,7 @@ jobs:
     name: Build the latest version of the package
     steps:
     - uses: actions/checkout@v4
-    - uses: mochi-hpc/mochi-test-build-action@v1
+    - uses: mochi-hpc/mochi-test-build-action@v3
 ```
 
 This workflow will infer the name of the package to install from the
@@ -45,7 +45,7 @@ jobs:
     name: Build the latest version of the package
     steps:
     - uses: actions/checkout@v4
-    - uses: mochi-hpc/mochi-test-build-action@v1
+    - uses: mochi-hpc/mochi-test-build-action@v3
       with:
         # The package name will default to the name of the repository
         package-name: mochi-margo
