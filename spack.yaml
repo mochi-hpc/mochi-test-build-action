@@ -1,6 +1,11 @@
 spack:
   specs: []
-  view: /opt/view
+  view:
+    default:
+      root: /opt/view
+      projections:
+        gcc-runtime: '{hash}'
+        all: ''
   packages:
     all:
       require: 'target=x86_64_v3'
