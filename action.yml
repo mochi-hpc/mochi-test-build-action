@@ -31,9 +31,9 @@ runs:
   using: "composite"
   steps:
   - name: Setup spack
-    uses: spack/setup-spack@v2.1.1
+    uses: spack/setup-spack@v3
     with:
-      ref: ${{ inputs.spack-version }}
+      spack_ref: ${{ inputs.spack-version }}
 
   - name: Extract name of calling repository
     id: extract_repo_name
