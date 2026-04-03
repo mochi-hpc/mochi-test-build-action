@@ -66,7 +66,7 @@ runs:
       pushd mochi-spack-packages
       git checkout ${{ inputs.mochi-spack-packages-version }}
       popd
-      spack -e myenv repo add mochi-spack-packages
+      spack -e myenv repo add mochi-spack-packages/spack_repo/mochi
 
   - name: Add package to environment
     shell: bash
